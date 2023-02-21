@@ -15,13 +15,13 @@ Stack<value_type>::Stack(std::initializer_list<value_type> const &items) : Stack
 }
 
 template <typename value_type>
-Stack<value_type>::Stack(const Stack &s) : Stack() {
-    this->copy(s);
+Stack<value_type>::Stack(const Stack &other) : Stack() {
+    this->copy(other);
 }
 
 template <typename value_type>
-Stack<value_type>::Stack(Stack &&s) : Stack(s) {
-    s.clear();
+Stack<value_type>::Stack(Stack &&other) : Stack(other) {
+    other.clear();
 }
 
 template <typename value_type>
@@ -30,8 +30,8 @@ Stack<value_type>::~Stack() {
 }
 
 template <typename value_type>
-Stack<value_type>& Stack<value_type>::operator=(Stack<value_type> &&s) {
-    this->copy(s);
+Stack<value_type>& Stack<value_type>::operator=(Stack<value_type> &&other) {
+    this->copy(other);
     return *this;
 }
 
@@ -82,9 +82,9 @@ void Stack<value_type>::clear() {
 }
 
 template <typename value_type>
-void Stack<value_type>::copy(const Stack &s) {
-    Node* tmp = s.top_; 
-    for (int i = 0; i < s.size_; ++i) {
+void Stack<value_type>::copy(const Stack &other) {
+    Node* tmp = other.top_; 
+    for (int i = 0; i < other.size_; ++i) {
         this->push(tmp->data);
         tmp = tmp->next;
     }

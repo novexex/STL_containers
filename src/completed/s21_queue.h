@@ -6,7 +6,7 @@
 
 namespace s21 {
     template <class T>
-    class Stack {
+    class Queue {
         public:
             // Member type
             using value_type      = T;
@@ -15,17 +15,18 @@ namespace s21 {
             using size_type       = size_t;
 
             // Member functions
-            Stack();
-            Stack(std::initializer_list<value_type> const &items);
-            Stack(const Stack &s);
-            Stack(Stack &&s);
-            ~Stack();
-            
+            Queue();
+            Queue(std::initializer_list<value_type> const &items);
+            Queue(const Queue &q);
+            Queue(Queue &&q);
+            ~Queue();
+
             // Operators
-            Stack<value_type>& operator=(Stack &&s);
+            Queue<value_type>& operator=(Queue &&q);
 
             // Element access
-            const_reference top();
+            const_reference front();
+            const_reference back();
 
             // Capacity
             bool empty();
@@ -34,11 +35,11 @@ namespace s21 {
             // Modifiers
             void push(const_reference value);
             void pop();
-            void swap(Stack& other);
+            void swap(Queue& other);
 
-            // Custom
+            // Convenience methods
             void clear();
-            void copy(const Stack &s);
+            void copy(const Queue &s);
 
         private:
             class Node {
@@ -52,11 +53,11 @@ namespace s21 {
                     }
             };
 
-            Node *top_;
+            Node *front_, *rear_;
             size_t size_;
     };
 }; // namespace s21
 
-#include "s21_stack.cc"
+#include "s21_queue.cc"
 
 #endif  // SRC_S21_STACK_H_

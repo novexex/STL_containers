@@ -1,13 +1,15 @@
 
-#include "s21_stack.h"
+#include "s21_queue.h"
 #include <iostream>
 
 using namespace s21;
 
 int main() {
-    Stack<int> *node = new Stack<int>(std::initializer_list<int> ({1, 3, 4, 5, 6}));
-    Stack<int> *copyNode = new Stack<int>(*node);
-
-    std::cout << copyNode->empty() << std::endl;
-    std::cout << copyNode->size() << std::endl;
+    s21::Queue<int> abc;
+    abc.push(23);
+    abc.push(43);
+    abc.push(443);
+    abc.push(431);
+    abc.push(423);
+    abc.clear();
 }
