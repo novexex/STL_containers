@@ -56,6 +56,7 @@ namespace s21 {
             void sort();
 
             // Convenience methods
+            void quick_sort();
 
         private:
             class Node {
@@ -70,7 +71,7 @@ namespace s21 {
                     }
             };
 
-            Node *top_;
+            Node *front_, *rear_, *iter_;
             size_t size_;
     };
 }; // namespace s21
