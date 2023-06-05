@@ -1,5 +1,7 @@
 #include "s21_list.h"
 
+#define MAX_SIZE_LIST 384307168202282325
+
 using namespace s21;
 
 template <typename value_type>
@@ -63,57 +65,105 @@ typename List<value_type>::iterator begin() {
 
 template <typename value_type>
 typename List<value_type>::iterator end() {
-
+    return this->iter_;
 }
 
 template <typename value_type>
 bool List<value_type>::empty() {
-
+    return (this->size_ == 0);
 }
 
 template <typename value_type>
 typename List<value_type>::size_type List<value_type>::size() {
-
+    return this->size_;
 }
 
 template <typename value_type>
 typename List<value_type>::size_type List<value_type>::max_size() {
-
+    return MAX_SIZE_LIST;
 }
 
 template <typename value_type>
 void List<value_type>::clear() {
-
+    size_type const_size = this->size_;
+    for (size_type i = 0; i < const_size; i++)
+        this->erase(this->begin());
 }
 
 template<class value_type>
 typename List<value_type>::iterator List<value_type>::insert(iterator pos, const_reference value) {
-
+    if (pos == this->begin()) {
+        this->push_front(value);
+    } else if (pos == this->end()) {
+        this->push_back(value);
+    } else {
+        Node* node_by_pos = get_node_by_pos(pos);
+        Node* node_before_pos = node_by_pos->back;
+        Node* new_node = new Node(value, node_by_pos, node_before_pos);
+        node_by_pos->back = node_before_pos->next = new_node;
+        this->size_++;
+    }
+    return --pos;
 }
 
 template<class value_type>
 void List<value_type>::erase(iterator pos) {
-
+    if (pos == this->end() || this->empty())
+        throw std::out_of_range("Error: Iterator is out of range");
+    Node* node = this->get_node_by_pos(pos);
+    Node* node_next = node->next;
+    Node* node_back = node->back;
+    if (this->size_ > 1 && node_next != this->iter_)
+        node_next->back = node_back;
+    if (this->size_ > 1 && node_back != this->iter_)
+        node_back->next = node_next;
+    if (pos == this->begin())
+        this->head_ = node_next;
+    if (pos == --end())
+        this->tail_ = node_back;
+    this->size_--;
+    this->set_iter((this->size_ == 0) ? value_type() : node->data);
+    delete node;
 }
 
 template<class value_type>
 void List<value_type>::push_back(const_reference value) {
-
+    Node *temp = new Node(value, nullptr, this->tail_);
+    if (this->tail_ != nullptr)
+        this->tail_->next = temp;
+    if (this->size_ == 0)
+        this->head_ = this->tail_ = temp;
+    else
+        this->tail_ = temp;
+    this->size_++;
+    this->set_iter(this->size_);
 }
 
 template<class value_type>
 void List<value_type>::pop_back() {
-
+    if (this->empty())
+        throw std::out_of_range("Error: List is empty");
+    this->erase(--end());
 }
 
 template<class value_type>
 void List<value_type>::push_front(const_reference value) {
-
+    Node *temp = new Node(value, this->head_, nullptr);
+    if (this->head_ != nullptr)
+        this->head_-> back = temp;
+    if (this->size_ == 0)
+        this->head_ = this->tail_ = temp;
+    else
+        this->head_ = temp;
+    this->size_++;
+    this->set_iter(this->size_);
 }
 
 template<class value_type>
 void List<value_type>::pop_front() {
-
+    if (this->empty())
+        throw std::out_of_range("Error: List is empty");
+    this->erase(begin());
 }
 
 template<class value_type>
